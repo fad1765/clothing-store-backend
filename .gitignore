@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual env
+venv/
+.venv/
+
+# VSCode
+.vscode/
+
+# Env file
+.env
+
+# uploads（很重要）
+uploads/
+
+# OS
+.DS_Store
+Thumbs.db
