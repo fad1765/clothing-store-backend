@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+app = FastAPI(title="MY BACKEND TEST APP")
 
 @app.get("/")
 def root():
-    return {"message": "ok"}
+    return {"message": "railway ok"}
