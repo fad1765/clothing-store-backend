@@ -4,6 +4,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
+from routers import products, comments, cart
+
 app = FastAPI()
 
 if not os.path.exists("uploads"):
@@ -26,12 +28,9 @@ app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 def root():
     return {"message": "railway ok"}
 
-try:
-    from routers import products
-    app.include_router(products.router)
-    print("products router loaded")
-except Exception as e:
-    print("products router error:", e)
+app.include_router(products.router)
+app.include_router(comments.router)
+app.include_router(cart.router)
 
 try:
     from routers import users
@@ -39,13 +38,6 @@ try:
     print("users router loaded")
 except Exception as e:
     print("users router error:", e)
-
-try:
-    from routers import cart
-    app.include_router(cart.router)
-    print("cart router loaded")
-except Exception as e:
-    print("cart router error:", e)
 
 try:
     from routers import orders
@@ -67,13 +59,6 @@ try:
     print("dashboard router loaded")
 except Exception as e:
     print("dashboard router error:", e)
-
-try:
-    from routers import comments
-    app.include_router(comments.router)
-    print("comments router loaded")
-except Exception as e:
-    print("comments router error:", e)
 
 try:
     from routers import wishlist
