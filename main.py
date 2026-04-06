@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from routers import products, comments, cart
+from routers import products, comments, cart, wishlist, coupons, users
 
 app = FastAPI()
 
@@ -32,13 +32,11 @@ app.include_router(products.router)
 app.include_router(comments.router)
 app.include_router(cart.router)
 
-try:
-    from routers import users
-    app.include_router(users.router)
-    print("users router loaded")
-except Exception as e:
-    print("users router error:", e)
+app.include_router(wishlist.router)
+app.include_router(coupons.router)
+app.include_router(users.router)
 
+# ❗ 第三段（先保留 debug）
 try:
     from routers import orders
     app.include_router(orders.router)
@@ -59,20 +57,6 @@ try:
     print("dashboard router loaded")
 except Exception as e:
     print("dashboard router error:", e)
-
-try:
-    from routers import wishlist
-    app.include_router(wishlist.router)
-    print("wishlist router loaded")
-except Exception as e:
-    print("wishlist router error:", e)
-
-try:
-    from routers import coupons
-    app.include_router(coupons.router)
-    print("coupons router loaded")
-except Exception as e:
-    print("coupons router error:", e)
 
 try:
     from routers import admin_coupons
