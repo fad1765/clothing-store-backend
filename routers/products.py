@@ -21,7 +21,7 @@ class ProductCreate(BaseModel):
 
 
 BACKEND_BASE_URL = os.getenv("BACKEND_BASE_URL", "").rstrip("/")
-
+print("BACKEND_BASE_URL =", BACKEND_BASE_URL)
 def build_image_url(image_path: str | None):
     if not image_path:
         return None
