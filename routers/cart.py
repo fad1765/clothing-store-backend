@@ -1,8 +1,12 @@
+import os
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from database import get_connection
 
 router = APIRouter(tags=["購物車"])
+
+BACKEND_BASE_URL = os.getenv("BACKEND_BASE_URL", "").rstrip("/")
 
 
 class CartItemAdd(BaseModel):
@@ -26,7 +30,12 @@ def build_image_url(image_path: str | None):
     if image_path.startswith("/images"):
         return image_path
 
-    return f"http://localhost:8000/{image_path.lstrip('/')}"
+    clean_path = image_path.lstrip("/")
+
+    if BACKEND_BASE_URL:
+        return f"{BACKEND_BASE_URL}/{clean_path}"
+
+    return f"/{clean_path}"
 
 
 # 取得使用者的購物車

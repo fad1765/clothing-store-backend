@@ -1,13 +1,35 @@
+import os
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from database import get_connection
 
 router = APIRouter(tags=["收藏商品"])
 
+BACKEND_BASE_URL = os.getenv("BACKEND_BASE_URL", "").rstrip("/")
+
 
 class WishlistCreate(BaseModel):
     user_id: int
     product_id: int
+
+
+def build_image_url(image_path: str | None):
+    if not image_path:
+        return None
+
+    if image_path.startswith("http://") or image_path.startswith("https://"):
+        return image_path
+
+    if image_path.startswith("/images"):
+        return image_path
+
+    clean_path = image_path.lstrip("/")
+
+    if BACKEND_BASE_URL:
+        return f"{BACKEND_BASE_URL}/{clean_path}"
+
+    return f"/{clean_path}"
 
 
 # 新增收藏
@@ -176,12 +198,12 @@ def get_user_wishlist(user_id: int):
                 "price": float(row[2]),
                 "category": row[3],
                 "description": row[4],
-                "rating": float(row[5]),
-                "reviews": row[6],
+                "rating": float(row[5] or 0),
+                "reviews": row[6] or 0,
                 "stock": row[7],
                 "is_hot": row[8],
                 "is_limited": row[9],
-                "image": f"http://localhost:8000/{row[10]}" if row[10] and not row[10].startswith("/images") else row[10],
+                "image": build_image_url(row[10]),
                 "wishlisted_at": row[11]
             }
             for row in rows

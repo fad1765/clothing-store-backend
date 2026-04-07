@@ -20,6 +20,8 @@ class ProductCreate(BaseModel):
     is_limited: bool = False
 
 
+BACKEND_BASE_URL = os.getenv("BACKEND_BASE_URL", "").rstrip("/")
+
 def build_image_url(image_path: str | None):
     if not image_path:
         return None
@@ -27,12 +29,15 @@ def build_image_url(image_path: str | None):
     if image_path.startswith("http://") or image_path.startswith("https://"):
         return image_path
 
-    # 原本就是 /images/... 這種靜態路徑，直接保留
     if image_path.startswith("/images"):
         return image_path
 
-    # uploads/xxx.jpg 這類路徑才補後端網址
-    return f"http://localhost:8000/{image_path.lstrip('/')}"
+    clean_path = image_path.lstrip("/")
+
+    if BACKEND_BASE_URL:
+        return f"{BACKEND_BASE_URL}/{clean_path}"
+
+    return f"/{clean_path}"
 
 
 # 取得所有商品（含多張圖片）
