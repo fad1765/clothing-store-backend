@@ -1,5 +1,6 @@
 import os
 
+from database import get_connection
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -38,6 +39,16 @@ app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 @app.get("/")
 def root():
     return {"message": "railway ok"}
+
+@app.get("/db-test")
+def db_test():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT 1")
+    result = cur.fetchone()
+    cur.close()
+    conn.close()
+    return {"db": result[0]}
 
 app.include_router(products.router)
 app.include_router(comments.router)
