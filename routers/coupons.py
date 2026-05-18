@@ -149,6 +149,7 @@ def evaluate_coupon(cursor, coupon_row, cart_items, user_id=None, email=None):
     return result
 
 
+# 列出所有優惠券並評估每張是否可使用
 @router.post("/list")
 def list_coupons(data: dict):
     conn = get_connection()
@@ -187,6 +188,7 @@ def list_coupons(data: dict):
         conn.close()
 
 
+# 取得可用的優惠券列表
 @router.post("/available")
 def get_available_coupons(data: dict):
     conn = get_connection()
@@ -231,6 +233,7 @@ def get_available_coupons(data: dict):
         conn.close()
 
 
+# 驗證單一優惠碼是否可用
 @router.post("/validate")
 def validate_coupon(data: dict):
     conn = get_connection()
@@ -285,6 +288,8 @@ def validate_coupon(data: dict):
         cursor.close()
         conn.close()
 
+
+# 取得可使用優惠券跑馬燈文字
 @router.get("/marquee")
 def get_coupon_marquee():
     conn = get_connection()

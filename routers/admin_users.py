@@ -11,6 +11,7 @@ class UserUpdate(BaseModel):
     role: str
 
 
+# 取得後台使用者清單
 @router.get("")
 def get_users():
     conn = get_connection()
@@ -54,6 +55,7 @@ def get_users():
     return users
 
 
+# 取得單一後台使用者資料
 @router.get("/{user_id}")
 def get_user(user_id: int):
     conn = get_connection()
@@ -96,6 +98,7 @@ def get_user(user_id: int):
     }
 
 
+# 更新後台使用者資料
 @router.put("/{user_id}")
 def update_user(user_id: int, user: UserUpdate):
     conn = get_connection()
@@ -136,6 +139,7 @@ def update_user(user_id: int, user: UserUpdate):
     return {"message": "更新成功"}
 
 
+# 刪除後台使用者
 @router.delete("/{user_id}")
 def delete_user(user_id: int):
     conn = get_connection()
@@ -157,6 +161,7 @@ def delete_user(user_id: int):
     return {"message": "刪除成功"}
 
 
+# 取得後台使用者的訂單列表
 @router.get("/{user_id}/orders")
 def get_user_orders(user_id: int):
     conn = get_connection()

@@ -38,6 +38,7 @@ def build_full_address(city, district, address):
     return f"{city or ''}{district or ''}{address or ''}"
 
 
+# 建立訂單並扣除商品庫存
 @router.post("/orders", status_code=201)
 def create_order(order: OrderCreate):
     conn = get_connection()
@@ -167,6 +168,7 @@ def create_order(order: OrderCreate):
         conn.close()
 
 
+# 取得指定使用者的訂單列表
 @router.get("/orders/user/{user_id}")
 def get_user_orders(user_id: int):
     conn = get_connection()
@@ -206,6 +208,7 @@ def get_user_orders(user_id: int):
         conn.close()
 
 
+# 後台取得所有訂單明細
 @router.get("/orders")
 def get_all_orders():
     conn = get_connection()
@@ -301,6 +304,7 @@ def get_all_orders():
         conn.close()
 
 
+# 取得指定訂單詳細資訊
 @router.get("/orders/detail/{order_id}")
 def get_order_detail(order_id: int):
     conn = get_connection()
@@ -392,6 +396,7 @@ def get_order_detail(order_id: int):
         conn.close()
 
 
+# 更新訂單狀態
 @router.put("/orders/{order_id}/status")
 def update_order_status(order_id: int, data: OrderStatusUpdate):
     allowed_status = ["pending", "shipped", "completed", "cancelled"]
@@ -403,6 +408,7 @@ def update_order_status(order_id: int, data: OrderStatusUpdate):
     cursor = conn.cursor()
 
     try:
+        # 更新訂單狀態
         if data.status == "completed":
             cursor.execute("""
                 UPDATE orders
@@ -446,6 +452,7 @@ def update_order_status(order_id: int, data: OrderStatusUpdate):
         conn.close()
 
 
+# 清理 30 天前完成訂單
 @router.delete("/orders/cleanup/completed")
 def cleanup_completed_orders():
     conn = get_connection()

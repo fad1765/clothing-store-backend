@@ -4,6 +4,7 @@ from database import get_connection
 router = APIRouter(prefix="/admin", tags=["後台總覽"])
 
 
+# 取得後台儀表板統計資料
 @router.get("/dashboard")
 def get_dashboard():
     conn = get_connection()

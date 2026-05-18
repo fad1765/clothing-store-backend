@@ -1,4 +1,4 @@
-# Backend API
+# Clothing-Store 後端專案
 
 以 FastAPI + PostgreSQL 實作的完整電商後端系統，支援商品管理、購物流程、訂單與後台統計功能。
 
